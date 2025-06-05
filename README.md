@@ -1,6 +1,6 @@
 # AI Hub
 
-A repository for exploring and sharing machine learning and AI experiments.
+A repository for exploring and sharing ML and AI experiments.
 
 ## Contributions
 
