@@ -1,0 +1,68 @@
+services:
+  mysql:
+    image: mysql/mysql-server:8.0.27
+    hostname: mysql
+    container_name: mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_USER=root
+      - MYSQL_ROOT_PASSWORD=debezium
+      - MYSQL_USER=mysqluser
+      - MYSQL_PASSWORD=mysqlpwd
+    volumes:
+      - ./mysql_bootstrap.sql:/docker-entrypoint-initdb.d/mysql_bootstrap.sql
+      - ./data:/var/lib/mysql-files/data
+
+  postgres:
+    image: debezium/postgres:18
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: "pg_isready -U postgresuser -d masterclass"
+      interval: 2s
+      timeout: 20s
+      retries: 10
+    environment:
+      - POSTGRES_USER=postgresuser
+      - POSTGRES_PASSWORD=postgrespwd
+      - POSTGRES_DB=masterclass
+      - PGPASSWORD=postgrespwd
+
+  jupyterlab:  # write and deploy the Spark job.
+    container_name: jupyterlab
+    image: jupyter/all-spark-notebook
+    ports:
+      - "8889:8888"  # JupyterLab
+    volumes:
+      - ./data:/home/ali/data  # Mount a local directory to the container for persistent storage
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+    command: "start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''"
+
+  spark-master:  # Spark master node
+    container_name: spark-master
+    image: bitnami/spark:4.0.0
+    ports:
+      - "8080:8080"  # Spark Web UI
+      - "7077:7077"  # Spark master
+    environment:
+      - SPARK_MODE=master
+
+  spark-worker:  # Spark worker node that executes the Spark jobs
+    container_name: spark-worker
+    image: bitnami/spark:4.0.0
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+    volumes:
+      - ./data:/home/ali/data
+    depends_on:
+      - spark-master
+
+volumes:
+  mysql_data:
+
+networks:
+  my-network:
+    driver: bridge
