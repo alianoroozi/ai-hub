@@ -1,22 +1,17 @@
-QA_CHECK_DIR := ./youtube-transcript-agent/
-QA_EXCLUDE_DIR := ./zero-shot-inference-on-multimodal-models/
-
-
-.PHONY: all clean format_check format_fix lint_check lint_fix
-
+.PHONY: all clean ruff_fix_imports ruff_format ruff_lint
 
 # --- QA ---
 
-format-check:
-	uv run ruff format --check $(QA_CHECK_DIR) --exclude $(QA_EXCLUDE_DIR)
+QA_CHECK_DIR := ./ai-agents-article-generator/
+QA_EXCLUDE_DIR := ./zero-shot-inference-on-multimodal-models/
 
-format-fix:
+ruff_fix_imports:
+	uv run ruff check --select I --fix $(QA_CHECK_DIR) --exclude $(QA_EXCLUDE_DIR)
+
+ruff_format:
 	uv run ruff format $(QA_CHECK_DIR) --exclude $(QA_EXCLUDE_DIR)
 
-lint-check:
-	uv run ruff check $(QA_CHECK_DIR) --exclude $(QA_EXCLUDE_DIR)
-
-lint-fix:
+ruff_lint:
 	uv run ruff check --fix $(QA_CHECK_DIR) --exclude $(QA_EXCLUDE_DIR)
 
 clean:
