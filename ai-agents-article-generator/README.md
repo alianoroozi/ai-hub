@@ -9,7 +9,7 @@ It uses a multi-agent workflow to split responsibilities between research and wr
 
 ### Research Analyst Agent
 - Accepts a topic from the user.
-- Uses the Travily web search tool to fetch results from the internet.
+- Uses the Tavily web search tool to fetch results from the internet.
 - Consolidates and curates the search results for further processing.
 
 ### Content Writer Agent
