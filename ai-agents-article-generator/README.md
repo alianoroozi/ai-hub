@@ -1,6 +1,6 @@
 # Multi-agent Article Generator
 
-This app takes a user query, searches the web for relevant information, and generates a well-crafted article with citations.  
+This app takes a user query, searches the web for relevant information, and generates a well-crafted article with citations.
 It uses a multi-agent workflow to split responsibilities between research and writing.
 
 ---
@@ -8,13 +8,13 @@ It uses a multi-agent workflow to split responsibilities between research and wr
 ## Agents
 
 ### Research Analyst Agent
-- Accepts a topic from the user.  
-- Uses the Travily web search tool to fetch results from the internet.  
-- Consolidates and curates the search results for further processing.  
+- Accepts a topic from the user.
+- Uses the Travily web search tool to fetch results from the internet.
+- Consolidates and curates the search results for further processing.
 
 ### Content Writer Agent
-- Takes the curated results.  
-- Produces a polished, publication-ready article with proper citations.  
+- Takes the curated results.
+- Produces a polished, publication-ready article with proper citations.
 
 ---
 
